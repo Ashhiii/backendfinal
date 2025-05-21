@@ -31,10 +31,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',  # Optional, for local dev
 ]
 
-
-
-AUTH_USER_MODEL = 'users.User'
-
 # Application definition
 
 INSTALLED_APPS = [
