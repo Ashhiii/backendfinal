@@ -5,6 +5,51 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+reset_tokens = {}
+
+class ForgotPasswordView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({"message": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+            token = get_random_string(length=32)
+            reset_tokens[email] = token  # In real apps, store in DB with expiration
+
+            # Simulate email sending (replace with actual send_mail)
+            send_mail(
+                'Password Reset',
+                f'Your reset token is: {token}',
+                'noreply@yourapp.com',
+                [email],
+                fail_silently=False,
+            )
+
+            return Response({"message": "Password reset token sent to email."}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"message": "User with that email does not exist."}, status=status.HTTP_404_NOT_FOUND)
+        
+class ResetPasswordView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        token = request.data.get('token')
+        new_password = request.data.get('new_password')
+
+        if reset_tokens.get(email) != token:
+            return Response({"message": "Invalid or expired token."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+            user.set_password(new_password)
+            user.save()
+            del reset_tokens[email]
+            return Response({"message": "Password reset successful."}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"message": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RegisterView(APIView):
@@ -80,3 +125,4 @@ class LoginView(APIView):
                 "email": user.email,
             }
         }, status=status.HTTP_200_OK)
+
