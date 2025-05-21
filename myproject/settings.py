@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '192.168.1.12',
-    'petdjango.onrender.com',
+    'https://backendfinal-24wu.onrender.com',
 ]
 
 
@@ -64,7 +64,7 @@ ROOT_URLCONF = 'myproject.urls'
 
 CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.4:8081",
-    "https://petdjango.onrender.com",
+    "https://backendfinal-24wu.onrender.com",
 ]
 CORS_ORIGIN_ALLOW_ALL = True 
 
