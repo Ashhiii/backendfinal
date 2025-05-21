@@ -26,11 +26,11 @@ SECRET_KEY = 'django-insecure-0on20mp52(5-!55_)@aa=5tfr^vuvj8wex7#@&lq@_rxqqntji
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '192.168.1.12',
-    'https://backendfinal-24wu.onrender.com',
+    'backendfinal-24wu.onrender.com',
+    'localhost',  # Optional, for local dev
+    '127.0.0.1',  # Optional, for local dev
 ]
+
 
 
 
